@@ -78,7 +78,7 @@ int ruch = 1;
 float KAT = 60.0;
 
 // Ilosc podzialow boku kwadratu jednostkowego
-const int N = 150;
+const int N = 20;
 // Obrot
 static GLfloat theta[] = { 0.0, 0.0, 0.0 };
 // Tablica sluzaca do zapisywania punktow
@@ -123,6 +123,35 @@ void nic() {
 	}
 }
 
+void Jajo() {
+	// Punkty
+	if (model == 1) {
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				glBegin(GL_POINTS);
+				glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
+				glEnd();
+				//cout << "x[" << i << "," << j << "]" << ": " << punktyJaja[i][j].x << " y: " << punktyJaja[i][j].y - 5 << " z: " << punktyJaja[i][j].z << std::endl;
+			}
+		}
+	}
+	// Linie
+	else if (model == 2) {
+		
+		}
+		glEnd();
+	}
+	// Kolorki
+	else if (model == 3) {
+
+	}
+		glEnd();
+	}
+	else if (model == 4) {
+		glutWireTeapot(3.0); // Narysowanie obrazu czajnika do herbaty
+	}
+}
+
 void RenderScene(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -150,172 +179,7 @@ void RenderScene(void)
 
 	glRotated(KAT, 1.0, 1.0, 1.0);  // Obrót o 60 stopni
 
-	// Punkty
-	if (model == 1) {
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
-				glBegin(GL_POINTS);
-					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
-				glEnd();
-				//cout << "x[" << i << "," << j << "]" << ": " << punktyJaja[i][j].x << " y: " << punktyJaja[i][j].y - 5 << " z: " << punktyJaja[i][j].z << std::endl;
-			}
-		}
-	}
-	// Linie
-	else if (model == 2) {
-		int pom = 0;
-		int min = 1;
-		int max = N - 1;
-		int max1 = max - 1;
-		glBegin(GL_LINES);
-		while (pom != N + 1) {
-			int temp1 = N - pom + 1;
-			if (temp1 < max) {
-				for (int i = 1; i < N - 1; i++) {
-					// Poziom
-					glVertex3f(punktyJaja[temp1][i].x, punktyJaja[temp1][i].y - 5, punktyJaja[temp1][i].z);
-					glVertex3f(punktyJaja[temp1][i + 1].x, punktyJaja[temp1][i + 1].y - 5, punktyJaja[temp1][i + 1].z);
-
-					// Pion
-					glVertex3f(punktyJaja[temp1][i].x, punktyJaja[temp1][i].y - 5, punktyJaja[temp1][i].z);
-					glVertex3f(punktyJaja[temp1 + 1][i].x, punktyJaja[temp1 + 1][i].y - 5, punktyJaja[temp1 + 1][i].z);
-
-					// Skos
-					glVertex3f(punktyJaja[temp1][i].x, punktyJaja[temp1][i].y - 5, punktyJaja[temp1][i].z);
-					glVertex3f(punktyJaja[temp1 + 1][i + 1].x, punktyJaja[temp1 + 1][i + 1].y - 5, punktyJaja[temp1 + 1][i + 1].z);
-				}
-			}
-			else if (temp1 == max) {
-				for (int i = 1; i < N - 1; i++) {
-					// Poziom
-					glVertex3f(punktyJaja[temp1][i].x, punktyJaja[temp1][i].y - 5, punktyJaja[temp1][i].z);
-					glVertex3f(punktyJaja[temp1][i + 1].x, punktyJaja[temp1][i + 1].y - 5, punktyJaja[temp1][i + 1].z);
-
-					// Pion
-					glVertex3f(punktyJaja[temp1][i].x, punktyJaja[temp1][i].y - 5, punktyJaja[temp1][i].z);
-					glVertex3f(punktyJaja[0][0].x, punktyJaja[0][0].y - 5, punktyJaja[0][0].z);
-				}
-			}
-			int temp2 = pom + 1;
-			if (temp2 < (N - 2)) {
-				for (int i = 1; i < N - 1; i++) {
-					// Poziom
-					glVertex3f(punktyJaja[temp2][i].x, punktyJaja[temp2][i].y - 5, punktyJaja[temp2][i].z);
-					glVertex3f(punktyJaja[temp2][i + 1].x, punktyJaja[temp2][i + 1].y - 5, punktyJaja[temp2][i + 1].z);
-
-					// Pion
-					glVertex3f(punktyJaja[temp2][i].x, punktyJaja[temp2][i].y - 5, punktyJaja[temp2][i].z);
-					glVertex3f(punktyJaja[temp2 - 1][i].x, punktyJaja[temp2 - 1][i].y - 5, punktyJaja[temp2 - 1][i].z);
-
-					// Skos
-					glVertex3f(punktyJaja[temp2][i].x, punktyJaja[temp2][i].y - 5, punktyJaja[temp2][i].z);
-					glVertex3f(punktyJaja[temp2 - 1][i + 1].x, punktyJaja[temp2 - 1][i + 1].y - 5, punktyJaja[temp2 - 1][i + 1].z);
-				}
-			}
-			// Poziom
-			glVertex3f(punktyJaja[temp1][max].x, punktyJaja[temp1][max].y - 5, punktyJaja[temp1][max].z);
-			glVertex3f(punktyJaja[temp2][min].x, punktyJaja[temp2][min].y - 5, punktyJaja[temp2][min].z);
-
-			glVertex3f(punktyJaja[temp2][max].x, punktyJaja[temp2][max].y - 5, punktyJaja[temp2][max].z);
-			glVertex3f(punktyJaja[temp1][min].x, punktyJaja[temp1][min].y - 5, punktyJaja[temp1][min].z);
-
-			// Pion
-			glVertex3f(punktyJaja[temp2][max].x, punktyJaja[temp2][max].y - 5, punktyJaja[temp2][max].z);
-			glVertex3f(punktyJaja[temp2 - 1][max].x, punktyJaja[temp2 - 1][max].y - 5, punktyJaja[temp2 - 1][max].z);
-
-			glVertex3f(punktyJaja[temp1][max].x, punktyJaja[temp1][max].y - 5, punktyJaja[temp1][max].z);
-			glVertex3f(punktyJaja[temp1 + 1][max].x, punktyJaja[temp1 + 1][max].y - 5, punktyJaja[temp1 + 1][max].z);
-
-			// Skos
-			glVertex3f(punktyJaja[temp2][max].x, punktyJaja[temp2][max].y - 5, punktyJaja[temp2][max].z);
-			glVertex3f(punktyJaja[temp1 + 1][min].x, punktyJaja[temp1 + 1][min].y - 5, punktyJaja[temp1 + 1][min].z);
-
-			glVertex3f(punktyJaja[temp1][max].x, punktyJaja[temp1][max].y - 5, punktyJaja[temp1][max].z);
-			glVertex3f(punktyJaja[temp2 - 1][min].x, punktyJaja[temp2 - 1][min].y - 5, punktyJaja[temp2 - 1][min].z);
-
-			pom++;
-		}
-		glEnd();
-	}
-	// Kolorki
-	else if (model == 3) {
-		int pom = 0;
-		int min = 1;
-		int max = N - 1;
-		glBegin(GL_TRIANGLES);
-		while (pom != N){
-			int temp1 = N - pom + 1;
-			for (int i = 0; i < N - 1; i++) {
-				// Polowa 1
-				glColor3f(koloryJaja[temp1][i].x, koloryJaja[temp1][i].y, koloryJaja[temp1][i].z);
-				glVertex3f(punktyJaja[temp1][i].x, punktyJaja[temp1][i].y - 5, punktyJaja[temp1][i].z);
-				glColor3f(koloryJaja[temp1][i + 1].x, koloryJaja[temp1][i + 1].y, koloryJaja[temp1][i + 1].z);
-				glVertex3f(punktyJaja[temp1][i + 1].x, punktyJaja[temp1][i + 1].y - 5, punktyJaja[temp1][i + 1].z);
-				glColor3f(koloryJaja[temp1 + 1][i].x, koloryJaja[temp1 + 1][i].y, koloryJaja[temp1 + 1][i].z);
-				glVertex3f(punktyJaja[temp1 + 1][i].x, punktyJaja[temp1 + 1][i].y - 5, punktyJaja[temp1 + 1][i].z);
-
-				glColor3f(koloryJaja[temp1 + 1][i].x, koloryJaja[temp1 + 1][i].y, koloryJaja[temp1 + 1][i].z);
-				glVertex3f(punktyJaja[temp1 + 1][i].x, punktyJaja[temp1 + 1][i].y - 5, punktyJaja[temp1 + 1][i].z);
-				glColor3f(koloryJaja[temp1 + 1][i + 1].x, koloryJaja[temp1 + 1][i + 1].y, koloryJaja[temp1 + 1][i + 1].z);
-				glVertex3f(punktyJaja[temp1 + 1][i + 1].x, punktyJaja[temp1 + 1][i + 1].y - 5, punktyJaja[temp1 + 1][i + 1].z);
-				glColor3f(koloryJaja[temp1][i + 1].x, koloryJaja[temp1][i + 1].y, koloryJaja[temp1][i + 1].z);
-				glVertex3f(punktyJaja[temp1][i + 1].x, punktyJaja[temp1][i + 1].y - 5, punktyJaja[temp1][i + 1].z);
-			}
-			int temp2 = pom + 1;
-			for (int i = 0; i < N - 1; i++) {
-				// Polowa 2
-				glColor3f(koloryJaja[temp2][i].x, koloryJaja[temp2][i].y, koloryJaja[temp2][i].z);
-				glVertex3f(punktyJaja[temp2][i].x, punktyJaja[temp2][i].y - 5, punktyJaja[temp2][i].z);
-				glColor3f(koloryJaja[temp2][i + 1].x, koloryJaja[temp2][i + 1].y, koloryJaja[temp2][i + 1].z);
-				glVertex3f(punktyJaja[temp2][i + 1].x, punktyJaja[temp2][i + 1].y - 5, punktyJaja[temp2][i + 1].z);
-				glColor3f(koloryJaja[temp2 - 1][i].x, koloryJaja[temp2 - 1][i].y, koloryJaja[temp2 - 1][i].z);
-				glVertex3f(punktyJaja[temp2 - 1][i].x, punktyJaja[temp2 - 1][i].y - 5, punktyJaja[temp2 - 1][i].z);
-
-				glColor3f(koloryJaja[temp2 - 1][i].x, koloryJaja[temp2 - 1][i].y, koloryJaja[temp2 - 1][i].z);
-				glVertex3f(punktyJaja[temp2 - 1][i].x, punktyJaja[temp2 - 1][i].y - 5, punktyJaja[temp2 - 1][i].z);
-				glColor3f(koloryJaja[temp2 - 1][i + 1].x, koloryJaja[temp2 - 1][i + 1].y, koloryJaja[temp2 - 1][i + 1].z);
-				glVertex3f(punktyJaja[temp2 - 1][i + 1].x, punktyJaja[temp2 - 1][i + 1].y - 5, punktyJaja[temp2 - 1][i + 1].z);
-				glColor3f(koloryJaja[temp2][i + 1].x, koloryJaja[temp2][i + 1].y, koloryJaja[temp2][i + 1].z);
-				glVertex3f(punktyJaja[temp2][i + 1].x, punktyJaja[temp2][i + 1].y - 5, punktyJaja[temp2][i + 1].z);
-			}
-			
-			// Dorobki
-			glColor3f(koloryJaja[temp1][max].x, koloryJaja[temp1][max].y, koloryJaja[temp1][max].z);
-			glVertex3f(punktyJaja[temp1][max].x, punktyJaja[temp1][max].y - 5, punktyJaja[temp1][max].z);
-			glColor3f(koloryJaja[temp2][min].x, koloryJaja[temp2][min].y, koloryJaja[temp2][min].z);
-			glVertex3f(punktyJaja[temp2][min].x, punktyJaja[temp2][min].y - 5, punktyJaja[temp2][min].z);
-			glColor3f(koloryJaja[temp1 + 1][max].x, koloryJaja[temp1 + 1][max].y, koloryJaja[temp1 + 1][max].z);
-			glVertex3f(punktyJaja[temp1 + 1][max].x, punktyJaja[temp1 + 1][max].y - 5, punktyJaja[temp1 + 1][max].z);
-
-			glColor3f(koloryJaja[temp1 + 1][max].x, koloryJaja[temp1 + 1][max].y, koloryJaja[temp1 + 1][max].z);
-			glVertex3f(punktyJaja[temp1 + 1][max].x, punktyJaja[temp1 + 1][max].y - 5, punktyJaja[temp1 + 1][max].z);
-			glColor3f(koloryJaja[temp2 - 1][min].x, koloryJaja[temp2 - 1][min].y, koloryJaja[temp2 - 1][min].z);
-			glVertex3f(punktyJaja[temp2 - 1][min].x, punktyJaja[temp2 - 1][min].y - 5, punktyJaja[temp2 - 1][min].z);
-			glColor3f(koloryJaja[temp2][min].x, koloryJaja[temp2][min].y, koloryJaja[temp2][min].z);
-			glVertex3f(punktyJaja[temp2][min].x, punktyJaja[temp2][min].y - 5, punktyJaja[temp2][min].z);
-
-			glColor3f(koloryJaja[temp1][min].x, koloryJaja[temp1][min].y, koloryJaja[temp1][min].z);
-			glVertex3f(punktyJaja[temp1][min].x, punktyJaja[temp1][min].y - 5, punktyJaja[temp1][min].z);
-			glColor3f(koloryJaja[temp2][max].x, koloryJaja[temp2][max].y, koloryJaja[temp2][max].z);
-			glVertex3f(punktyJaja[temp2][max].x, punktyJaja[temp2][max].y - 5, punktyJaja[temp2][max].z);
-			glColor3f(koloryJaja[temp1 + 1][min].x, koloryJaja[temp1 + 1][min].y, koloryJaja[temp1 + 1][min].z);
-			glVertex3f(punktyJaja[temp1 + 1][min].x, punktyJaja[temp1 + 1][min].y - 5, punktyJaja[temp1 + 1][min].z);
-
-			glColor3f(koloryJaja[temp1 + 1][min].x, koloryJaja[temp1 + 1][min].y, koloryJaja[temp1 + 1][min].z);
-			glVertex3f(punktyJaja[temp1 + 1][min].x, punktyJaja[temp1 + 1][min].y - 5, punktyJaja[temp1 + 1][min].z);
-			glColor3f(koloryJaja[temp2 - 1][max].x, koloryJaja[temp2 - 1][max].y, koloryJaja[temp2 - 1][max].z);
-			glVertex3f(punktyJaja[temp2 - 1][max].x, punktyJaja[temp2 - 1][max].y - 5, punktyJaja[temp2 - 1][max].z);
-			glColor3f(koloryJaja[temp2][max].x, koloryJaja[temp2][max].y, koloryJaja[temp2][max].z);
-			glVertex3f(punktyJaja[temp2][max].x, punktyJaja[temp2][max].y - 5, punktyJaja[temp2][max].z);
-
-			pom++;
-		}
-			
-		glEnd();
-	}
-	else if (model == 4) {
-		glutWireTeapot(3.0); // Narysowanie obrazu czajnika do herbaty
-	}
+	Jajo();
 
 	glFlush();
 	// Przekazanie poleceń rysujących do wykonania
