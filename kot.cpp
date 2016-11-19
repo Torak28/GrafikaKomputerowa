@@ -139,13 +139,25 @@ void Jajo() {
 	else if (model == 2) {
 		
 		glBegin(GL_LINES);
-		for (int i = 0; i < N; i++) {
+		//for (int i = 0; i < N; i++) {
+		int  = 5;
 			for (int j = 0; j < N - 1; j++) {
 				glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
 				glVertex3f(punktyJaja[i][j + 1].x, punktyJaja[i][j + 1].y - 5, punktyJaja[i][j + 1].z);
 			}
-		}
-		glEnd();	
+			glVertex3f(punktyJaja[i][0].x, punktyJaja[i][0].y - 5, punktyJaja[i][0].z);
+		i = 15;
+			glVertex3f(punktyJaja[i][N-1].x, punktyJaja[i][0].y - 5, punktyJaja[i][N-1].z);
+		//}
+			for (int j = 0; j < N - 1; j++) {
+				glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
+				glVertex3f(punktyJaja[i][j + 1].x, punktyJaja[i][j + 1].y - 5, punktyJaja[i][j + 1].z);
+			}
+			glVertex3f(punktyJaja[i][0].x, punktyJaja[i][0].y - 5, punktyJaja[i][0].z);
+		i = 5;
+			glVertex3f(punktyJaja[i][N - 1].x, punktyJaja[i][0].y - 5, punktyJaja[i][N - 1].z);
+
+		glEnd();
 	}
 	// Kolorki
 	/*else if (model == 3) {
