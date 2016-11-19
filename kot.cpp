@@ -138,6 +138,13 @@ void Jajo() {
 	// Linie
 	else if (model == 2) {
 		
+		glBegin(GL_LINES);
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N - 1; j++) {
+				glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
+				glVertex3f(punktyJaja[i][j + 1].x, punktyJaja[i][j + 1].y - 5, punktyJaja[i][j + 1].z);
+			}
+		}
 		glEnd();	
 	}
 	// Kolorki
