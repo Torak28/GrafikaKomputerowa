@@ -149,6 +149,22 @@ void Jajo() {
 				glVertex3f(punktyJaja[pom][N - 1].x, punktyJaja[pom][N - 1].y - 5, punktyJaja[pom][N - 1].z);
 			}
 		}
+
+		//Poionowe Linie
+		for (int i = 0; i < N; i++) {
+			int pom = N - i;
+			for (int j = 0; j < N ; j++) {
+				if (i == N-1) {
+					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
+					glVertex3f(punktyJaja[0][0].x, punktyJaja[0][0].y - 5, punktyJaja[0][0].z);
+				}
+				else {
+					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
+					glVertex3f(punktyJaja[i + 1][j].x, punktyJaja[i + 1][j].y - 5, punktyJaja[i + 1][j].z);
+				}
+			}
+		}
+
 		glEnd();
 	}
 	// Kolorki
