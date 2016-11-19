@@ -138,15 +138,14 @@ void Jajo() {
 	// Linie
 	else if (model == 2) {
 		
-		}
-		glEnd();
+		glEnd();	
 	}
 	// Kolorki
-	else if (model == 3) {
+	/*else if (model == 3) {
 
 	}
 		glEnd();
-	}
+	}*/
 	else if (model == 4) {
 		glutWireTeapot(3.0); // Narysowanie obrazu czajnika do herbaty
 	}
