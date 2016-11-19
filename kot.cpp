@@ -131,32 +131,24 @@ void Jajo() {
 				glBegin(GL_POINTS);
 				glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
 				glEnd();
-				//cout << "x[" << i << "," << j << "]" << ": " << punktyJaja[i][j].x << " y: " << punktyJaja[i][j].y - 5 << " z: " << punktyJaja[i][j].z << std::endl;
 			}
 		}
 	}
 	// Linie
 	else if (model == 2) {
-		
 		glBegin(GL_LINES);
-		//for (int i = 0; i < N; i++) {
-		int  = 5;
+		//Poziome Linie
+		for (int i = 0; i < N; i++) {
+		int pom = N - i;
 			for (int j = 0; j < N - 1; j++) {
 				glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
 				glVertex3f(punktyJaja[i][j + 1].x, punktyJaja[i][j + 1].y - 5, punktyJaja[i][j + 1].z);
 			}
-			glVertex3f(punktyJaja[i][0].x, punktyJaja[i][0].y - 5, punktyJaja[i][0].z);
-		i = 15;
-			glVertex3f(punktyJaja[i][N-1].x, punktyJaja[i][0].y - 5, punktyJaja[i][N-1].z);
-		//}
-			for (int j = 0; j < N - 1; j++) {
-				glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
-				glVertex3f(punktyJaja[i][j + 1].x, punktyJaja[i][j + 1].y - 5, punktyJaja[i][j + 1].z);
+			if (pom != N) {
+				glVertex3f(punktyJaja[i][0].x, punktyJaja[i][0].y - 5, punktyJaja[i][0].z);
+				glVertex3f(punktyJaja[pom][N - 1].x, punktyJaja[pom][N - 1].y - 5, punktyJaja[pom][N - 1].z);
 			}
-			glVertex3f(punktyJaja[i][0].x, punktyJaja[i][0].y - 5, punktyJaja[i][0].z);
-		i = 5;
-			glVertex3f(punktyJaja[i][N - 1].x, punktyJaja[i][0].y - 5, punktyJaja[i][N - 1].z);
-
+		}
 		glEnd();
 	}
 	// Kolorki
