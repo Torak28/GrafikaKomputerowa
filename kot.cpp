@@ -184,7 +184,7 @@ void Jajo() {
 	else if (model == 2) {
 		glBegin(GL_LINES);
 		//Poziome Linie
-		/*for (int i = 0; i < N; i++) {
+		for (int i = 0; i < N; i++) {
 			int pom = N - i;
 			for (int j = 0; j < N - 1; j++) {
 				glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
@@ -211,31 +211,28 @@ void Jajo() {
 					glVertex3f(punktyJaja[i + 1][j].x, punktyJaja[i + 1][j].y - 5, punktyJaja[i + 1][j].z);
 				}
 			}
-		}*/
+		}
 
 		//Skośne Linie
-		for (int i = 0; i < N - 1; i++) {
+		for (int i = N/2; i < N; i++) {
+			int pom = N - i;
+			for (int j = 0; j < N - 1; j++) {
+				if (i == N - 1) {
+					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
+					glVertex3f(punktyJaja[0][0].x, punktyJaja[0][0].y - 5, punktyJaja[0][0].z);
+				}
+				else {
+					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
+					glVertex3f(punktyJaja[i + 1][j + 1].x, punktyJaja[i + 1][j + 1].y - 5, punktyJaja[i + 1][j + 1].z);
+				}
+			}
+		}
+		for (int i = 1; i < N/2 + 1; i++) {
 			int pom = N - i;
 			for (int j = 0; j < N - 1; j++) {
 				glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
-				glVertex3f(punktyJaja[i + 1][j + 1].x, punktyJaja[i + 1][j + 1].y - 5, punktyJaja[i + 1][j + 1].z);
-			}
-			if (pom != N) {
-				glVertex3f(punktyJaja[i + 1][0].x, punktyJaja[i + 1][0].y - 5, punktyJaja[i + 1][0].z);
-				glVertex3f(punktyJaja[pom][N - 1].x, punktyJaja[pom][N - 1].y - 5, punktyJaja[pom][N - 1].z);
-			}
-		}
-		/*for (int i = 0; i < N/2 - 1; i++) {
-		int pom = N - i;
-		for (int j = 0; j < N - 1; j++) {
-		glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
-		glVertex3f(punktyJaja[i + 1][j + 1].x, punktyJaja[i + 1][j + 1].y - 5, punktyJaja[i + 1][j + 1].z);
-		}
-		if (pom != N) {
-		glVertex3f(punktyJaja[i - 1][0].x, punktyJaja[i - 1][0].y - 5, punktyJaja[i - 1][0].z);
-		glVertex3f(punktyJaja[pom][N - 1].x, punktyJaja[pom][N - 1].y - 5, punktyJaja[pom][N - 1].z);
-		}
-
+				glVertex3f(punktyJaja[i - 1][j + 1].x, punktyJaja[i - 1][j + 1].y - 5, punktyJaja[i - 1][j + 1].z);
+				}
 		}
 		glEnd();
 	}
