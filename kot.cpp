@@ -16,8 +16,8 @@ static GLfloat theta3 = 0.0;
 static GLfloat pix2angle;     // przelicznik pikseli na stopnie
 
 static GLint status = 0;       // stan klawiszy myszy 
-// 0 - nie naciśnięto żadnego klawisza
-// 1 - naciśnięty zostać lewy klawisz
+							   // 0 - nie naciśnięto żadnego klawisza
+							   // 1 - naciśnięty zostać lewy klawisz
 
 static int x_pos_old = 0;       // poprzednia pozycja kursora myszy
 static int y_pos_old = 0;
@@ -29,10 +29,10 @@ typedef float point3[3];
 using namespace std;
 
 static int delta_x = 0;        // różnica pomiędzy pozycją bieżącą
-// i poprzednią kursora myszy 
+							   // i poprzednią kursora myszy 
 static int delta_y = 0;        // różnica pomiędzy pozycją bieżącą
-// i poprzednią kursora myszy 
-// inicjalizacja położenia obserwatora
+							   // i poprzednią kursora myszy 
+							   // inicjalizacja położenia obserwatora
 static int delta_z = 0;
 /*************************************************************************************/
 // Funkcja rysująca osie układu wspó?rz?dnych
@@ -82,10 +82,10 @@ void Mouse(int btn, int state, int x, int y)
 	if (btn == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
 		x_pos_old = x;         // przypisanie aktualnie odczytanej pozycji kursora 
-		y_pos_old = y; 		
+		y_pos_old = y;
 		status = 1;           // wcięnięty został lewy klawisz myszy
 	}
-	else if (btn == GLUT_RIGHT_BUTTON && state == GLUT_DOWN){
+	else if (btn == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
 		y_pos_old = y;
 		status = 2;
 	}
@@ -185,34 +185,36 @@ void Jajo() {
 		glBegin(GL_LINES);
 		//Poziome Linie
 		/*for (int i = 0; i < N; i++) {
-		int pom = N - i;
-		for (int j = 0; j < N - 1; j++) {
-		glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
-		glVertex3f(punktyJaja[i][j + 1].x, punktyJaja[i][j + 1].y - 5, punktyJaja[i][j + 1].z);
-		}
-		if (pom != N) {
-		glVertex3f(punktyJaja[i][0].x, punktyJaja[i][0].y - 5, punktyJaja[i][0].z);
-		glVertex3f(punktyJaja[pom][N - 1].x, punktyJaja[pom][N - 1].y - 5, punktyJaja[pom][N - 1].z);
-		}
+			int pom = N - i;
+			for (int j = 0; j < N - 1; j++) {
+				glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
+				glVertex3f(punktyJaja[i][j + 1].x, punktyJaja[i][j + 1].y - 5, punktyJaja[i][j + 1].z);
+			}
+			// Problem z nie rysowaniem łączeń w okregu
+			if (pom != N) {
+				glVertex3f(punktyJaja[i][0].x, punktyJaja[i][0].y - 5, punktyJaja[i][0].z);
+				glVertex3f(punktyJaja[pom][N - 1].x, punktyJaja[pom][N - 1].y - 5, punktyJaja[pom][N - 1].z);
+			}
 		}
 
 		//Poionowe Linie
 		for (int i = 0; i < N; i++) {
-		int pom = N - i;
-		for (int j = 0; j < N ; j++) {
-		if (i == N-1) {
-		glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
-		glVertex3f(punktyJaja[0][0].x, punktyJaja[0][0].y - 5, punktyJaja[0][0].z);
-		}
-		else {
-		glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
-		glVertex3f(punktyJaja[i + 1][j].x, punktyJaja[i + 1][j].y - 5, punktyJaja[i + 1][j].z);
-		}
-		}
+			int pom = N - i;
+			for (int j = 0; j < N ; j++) {
+				// Problem w nierysowaniu łączenia z punktem [0][0]
+				if (i == N-1) {
+					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
+					glVertex3f(punktyJaja[0][0].x, punktyJaja[0][0].y - 5, punktyJaja[0][0].z);
+				}
+				else {
+					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
+					glVertex3f(punktyJaja[i + 1][j].x, punktyJaja[i + 1][j].y - 5, punktyJaja[i + 1][j].z);
+				}
+			}
 		}*/
 
 		//Skośne Linie
-		for (int i = N / 2; i < N - 1; i++) {
+		for (int i = 0; i < N - 1; i++) {
 			int pom = N - i;
 			for (int j = 0; j < N - 1; j++) {
 				glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
@@ -234,7 +236,7 @@ void Jajo() {
 		glVertex3f(punktyJaja[pom][N - 1].x, punktyJaja[pom][N - 1].y - 5, punktyJaja[pom][N - 1].z);
 		}
 
-		}*/
+		}
 		glEnd();
 	}
 	// Kolorki
