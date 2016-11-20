@@ -131,7 +131,7 @@ struct Punkt {
 
 /********************************OBSŁUGA********************************/
 // 1- punkty, 2- siatka, 3 - wypełnione trójkąty, 4 - czjniczek
-int model = 2;
+int model = 3;
 int ruch = 1;
 float KAT = 90.0;
 
@@ -203,7 +203,7 @@ void Jajo() {
 			int pom = N - i;
 			for (int j = 0; j < N ; j++) {
 				// Problem w nierysowaniu łączenia z punktem [0][0]
-				if (i == N-1) {
+				if (i == N - 1) {
 					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
 					glVertex3f(punktyJaja[0][0].x, punktyJaja[0][0].y - 5, punktyJaja[0][0].z);
 				}
@@ -253,11 +253,60 @@ void Jajo() {
 		glEnd();
 	}
 	// Kolorki
-	/*else if (model == 3) {
+	else if (model == 3) {
+		glBegin(GL_TRIANGLES);
+		for (int i = N / 2; i < N; i++) {
+			int pom = N - i;
+			for (int j = 0; j < N - 1; j++) {
+				if (i == N - 1) {
+					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
+					glVertex3f(punktyJaja[i][j + 1].x, punktyJaja[i][j + 1].y - 5, punktyJaja[i][j + 1].z);
+					glVertex3f(punktyJaja[0][0].x, punktyJaja[0][0].y - 5, punktyJaja[0][0].z);
+				}
+				else {
+					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
+					glVertex3f(punktyJaja[i + 1][j].x, punktyJaja[i + 1][j].y - 5, punktyJaja[i + 1][j].z);
+					glVertex3f(punktyJaja[i + 1][j + 1].x, punktyJaja[i + 1][j + 1].y - 5, punktyJaja[i + 1][j + 1].z);
+				}
+				if (pom != N) {
+					glVertex3f(punktyJaja[i][0].x, punktyJaja[i][0].y - 5, punktyJaja[i][0].z);
+					glVertex3f(punktyJaja[pom][N - 1].x, punktyJaja[pom][N - 1].y - 5, punktyJaja[pom][N - 1].z);
+					glVertex3f(punktyJaja[pom + 1][N - 1].x, punktyJaja[pom + 1][N - 1].y - 5, punktyJaja[pom + 1][N - 1].z);
+				}
+			}
+		}
+		glColor3f(1.0f, 1.0f, 0.0f);
+		glVertex3f(punktyJaja[0][0].x, punktyJaja[0][0].y - 5, punktyJaja[0][0].z);
+		glVertex3f(punktyJaja[N - 1][0].x, punktyJaja[N - 1][0].y - 5, punktyJaja[N - 1][0].z);
+		glVertex3f(punktyJaja[1][N - 1].x, punktyJaja[1][N - 1].y - 5, punktyJaja[1][N - 1].z);
 
+		glVertex3f(punktyJaja[0][0].x, punktyJaja[0][0].y - 5, punktyJaja[0][0].z);
+		glVertex3f(punktyJaja[1][0].x, punktyJaja[1][0].y - 5, punktyJaja[1][0].z);
+		glVertex3f(punktyJaja[N - 1][N - 1].x, punktyJaja[N - 1][N - 1].y - 5, punktyJaja[N - 1][N - 1].z);
+
+		glColor3f(1.0f, 1.0f, 1.0f);
+		for (int i = 0; i < N / 2 + 1; i++) {
+			int pom = N - i;
+			for (int j = 0; j < N - 1; j++) {
+				if (i == 1) {
+					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
+					glVertex3f(punktyJaja[i][j + 1].x, punktyJaja[i][j + 1].y - 5, punktyJaja[i][j + 1].z);
+					glVertex3f(punktyJaja[0][0].x, punktyJaja[0][0].y - 5, punktyJaja[0][0].z);
+				}
+				else {
+					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
+					glVertex3f(punktyJaja[i - 1][j].x, punktyJaja[i - 1][j].y - 5, punktyJaja[i - 1][j].z);
+					glVertex3f(punktyJaja[i - 1][j + 1].x, punktyJaja[i - 1][j + 1].y - 5, punktyJaja[i - 1][j + 1].z);
+				}
+				if (pom != N) {
+					glVertex3f(punktyJaja[i][0].x, punktyJaja[i][0].y - 5, punktyJaja[i][0].z);
+					glVertex3f(punktyJaja[pom][N - 1].x, punktyJaja[pom][N - 1].y - 5, punktyJaja[pom][N - 1].z);
+					glVertex3f(punktyJaja[pom - 1][N - 1].x, punktyJaja[pom - 1][N - 1].y - 5, punktyJaja[pom - 1][N - 1].z);
+				}
+			}
+		}
+		glEnd();
 	}
-	glEnd();
-	}*/
 	else if (model == 4) {
 		glutWireTeapot(3.0); // Narysowanie obrazu czajnika do herbaty
 	}
