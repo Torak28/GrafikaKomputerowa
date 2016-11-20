@@ -183,7 +183,7 @@ void Jajo() {
 	// Linie
 	else if (model == 2) {
 		glBegin(GL_LINES);
-		//Poziome Linie
+		/*//Poziome Linie
 		for (int i = 0; i < N; i++) {
 			int pom = N - i;
 			for (int j = 0; j < N - 1; j++) {
@@ -211,7 +211,7 @@ void Jajo() {
 					glVertex3f(punktyJaja[i + 1][j].x, punktyJaja[i + 1][j].y - 5, punktyJaja[i + 1][j].z);
 				}
 			}
-		}
+		}*/
 
 		//Skośne Linie
 		for (int i = N/2; i < N; i++) {
@@ -225,6 +225,10 @@ void Jajo() {
 					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
 					glVertex3f(punktyJaja[i + 1][j + 1].x, punktyJaja[i + 1][j + 1].y - 5, punktyJaja[i + 1][j + 1].z);
 				}
+				if (pom != N) {
+					glVertex3f(punktyJaja[i][0].x, punktyJaja[i][0].y - 5, punktyJaja[i][0].z);
+					glVertex3f(punktyJaja[pom + 1][N - 1].x, punktyJaja[pom + 1][N - 1].y - 5, punktyJaja[pom + 1][N - 1].z);
+				}
 			}
 		}
 		for (int i = 1; i < N/2 + 1; i++) {
@@ -232,8 +236,13 @@ void Jajo() {
 			for (int j = 0; j < N - 1; j++) {
 				glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
 				glVertex3f(punktyJaja[i - 1][j + 1].x, punktyJaja[i - 1][j + 1].y - 5, punktyJaja[i - 1][j + 1].z);
+				if (pom != N) {
+					glVertex3f(punktyJaja[i][0].x, punktyJaja[i][0].y - 5, punktyJaja[i][0].z);
+					glVertex3f(punktyJaja[pom - 1][N - 1].x, punktyJaja[pom - 1][N - 1].y - 5, punktyJaja[pom - 1][N - 1].z);
 				}
+			}
 		}
+
 		glEnd();
 	}
 	// Kolorki
