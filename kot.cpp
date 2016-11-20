@@ -126,6 +126,9 @@ struct Punkt {
 	float x;
 	float y;
 	float z;
+	float xRGB;
+	float yRGB;
+	float zRGB;
 };
 
 
@@ -141,7 +144,6 @@ const int N = 20;
 static GLfloat theta[] = { 0.0, 0.0, 0.0 };
 // Tablica sluzaca do zapisywania punktow
 struct Punkt punktyJaja[N][N];
-struct Punkt koloryJaja[N][N];
 
 float krok = 1.0 / N;
 
@@ -154,20 +156,15 @@ void nic() {
 			punktyJaja[i][j].x = wyliczX(i * krok, j * krok);
 			punktyJaja[i][j].y = wyliczY(i * krok, j * krok);
 			punktyJaja[i][j].z = wyliczZ(i * krok, j * krok);
-		}
-	}
-	// Kolorki
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < N; j++) {
-			koloryJaja[i][j].x = ((double)rand() / (RAND_MAX));
-			koloryJaja[i][j].y = ((double)rand() / (RAND_MAX));
-			koloryJaja[i][j].z = ((double)rand() / (RAND_MAX));
+			//Kolorki
+			punktyJaja[i][j].xRGB = ((double)rand() / (RAND_MAX));
+			punktyJaja[i][j].yRGB = ((double)rand() / (RAND_MAX));
+			punktyJaja[i][j].zRGB = ((double)rand() / (RAND_MAX));
 		}
 	}
 }
 
 void Jajo() {
-	nic();
 	// Punkty
 	if (model == 1) {
 		for (int i = 0; i < N; i++) {
@@ -259,44 +256,60 @@ void Jajo() {
 			int pom = N - i;
 			for (int j = 0; j < N - 1; j++) {
 				if (i == N - 1) {
+					glColor3f(punktyJaja[i][j].xRGB, punktyJaja[i][j].yRGB, punktyJaja[i][j].zRGB);
 					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
+					glColor3f(punktyJaja[i][j + 1].xRGB, punktyJaja[i][j + 1].yRGB, punktyJaja[i][j + 1].zRGB);
 					glVertex3f(punktyJaja[i][j + 1].x, punktyJaja[i][j + 1].y - 5, punktyJaja[i][j + 1].z);
+					glColor3f(punktyJaja[0][0].xRGB, punktyJaja[0][0].yRGB, punktyJaja[0][0].zRGB);
 					glVertex3f(punktyJaja[0][0].x, punktyJaja[0][0].y - 5, punktyJaja[0][0].z);
 				}
 				else {
+					glColor3f(punktyJaja[i][j].xRGB, punktyJaja[i][j].yRGB, punktyJaja[i][j].zRGB);
 					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
+					glColor3f(punktyJaja[i + 1][j].xRGB, punktyJaja[i + 1][j].yRGB, punktyJaja[i + 1][j].zRGB);
 					glVertex3f(punktyJaja[i + 1][j].x, punktyJaja[i + 1][j].y - 5, punktyJaja[i + 1][j].z);
+					glColor3f(punktyJaja[i + 1][j + 1].xRGB, punktyJaja[i + 1][j + 1].yRGB, punktyJaja[i + 1][j + 1].zRGB);
 					glVertex3f(punktyJaja[i + 1][j + 1].x, punktyJaja[i + 1][j + 1].y - 5, punktyJaja[i + 1][j + 1].z);
 
-					glColor3f(1.0f, 1.0f, 0.0f);
+					glColor3f(punktyJaja[i][j].xRGB, punktyJaja[i][j].yRGB, punktyJaja[i][j].zRGB);
 					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
+					glColor3f(punktyJaja[i][j + 1].xRGB, punktyJaja[i][j + 1].yRGB, punktyJaja[i][j + 1].zRGB);
 					glVertex3f(punktyJaja[i][j + 1].x, punktyJaja[i][j + 1].y - 5, punktyJaja[i][j + 1].z);
+					glColor3f(punktyJaja[i + 1][j + 1].xRGB, punktyJaja[i + 1][j + 1].yRGB, punktyJaja[i + 1][j + 1].zRGB);
 					glVertex3f(punktyJaja[i + 1][j + 1].x, punktyJaja[i + 1][j + 1].y - 5, punktyJaja[i + 1][j + 1].z);
-					glColor3f(1.0f, 1.0f, 1.0f);
 				}
 				if (pom != N) {
+					glColor3f(punktyJaja[i][0].xRGB, punktyJaja[i][0].yRGB, punktyJaja[i][0].zRGB);
 					glVertex3f(punktyJaja[i][0].x, punktyJaja[i][0].y - 5, punktyJaja[i][0].z);
+					glColor3f(punktyJaja[pom][N - 1].xRGB, punktyJaja[pom][N - 1].yRGB, punktyJaja[pom][N - 1].zRGB);
 					glVertex3f(punktyJaja[pom][N - 1].x, punktyJaja[pom][N - 1].y - 5, punktyJaja[pom][N - 1].z);
+					glColor3f(punktyJaja[pom + 1][N - 1].xRGB, punktyJaja[pom + 1][N - 1].yRGB, punktyJaja[pom + 1][N - 1].zRGB);
 					glVertex3f(punktyJaja[pom + 1][N - 1].x, punktyJaja[pom + 1][N - 1].y - 5, punktyJaja[pom + 1][N - 1].z);
 
 					if (i != N / 2){
-						glColor3f(1.0f, 1.0f, 0.0f);
+						glColor3f(punktyJaja[i][0].xRGB, punktyJaja[i][0].yRGB, punktyJaja[i][0].zRGB);
 						glVertex3f(punktyJaja[i][0].x, punktyJaja[i][0].y - 5, punktyJaja[i][0].z);
+						glColor3f(punktyJaja[i - 1][0].xRGB, punktyJaja[i - 1][0].yRGB, punktyJaja[i - 1][0].zRGB);
 						glVertex3f(punktyJaja[i - 1][0].x, punktyJaja[i - 1][0].y - 5, punktyJaja[i - 1][0].z);
+						glColor3f(punktyJaja[pom + 1][N - 1].xRGB, punktyJaja[pom + 1][N - 1].yRGB, punktyJaja[pom + 1][N - 1].zRGB);
 						glVertex3f(punktyJaja[pom + 1][N - 1].x, punktyJaja[pom + 1][N - 1].y - 5, punktyJaja[pom + 1][N - 1].z);
-						glColor3f(1.0f, 1.0f, 1.0f);
 					}
 				}
 			}
 		}
-		
+		glColor3f(punktyJaja[0][0].xRGB, punktyJaja[0][0].yRGB, punktyJaja[0][0].zRGB);
 		glVertex3f(punktyJaja[0][0].x, punktyJaja[0][0].y - 5, punktyJaja[0][0].z);
+		glColor3f(punktyJaja[N - 1][0].xRGB, punktyJaja[N - 1][0].yRGB, punktyJaja[N - 1][0].zRGB);
 		glVertex3f(punktyJaja[N - 1][0].x, punktyJaja[N - 1][0].y - 5, punktyJaja[N - 1][0].z);
+		glColor3f(punktyJaja[1][N - 1].xRGB, punktyJaja[1][N - 1].yRGB, punktyJaja[1][N - 1].zRGB);
 		glVertex3f(punktyJaja[1][N - 1].x, punktyJaja[1][N - 1].y - 5, punktyJaja[1][N - 1].z);
 
 
+		glColor3f(punktyJaja[0][0].xRGB, punktyJaja[0][0].yRGB, punktyJaja[0][0].zRGB);
 		glVertex3f(punktyJaja[0][0].x, punktyJaja[0][0].y - 5, punktyJaja[0][0].z);
+		glColor3f(punktyJaja[1][0].xRGB, punktyJaja[1][0].yRGB, punktyJaja[1][0].zRGB);
 		glVertex3f(punktyJaja[1][0].x, punktyJaja[1][0].y - 5, punktyJaja[1][0].z);
+		glColor3f(punktyJaja[N - 1][N - 1].xRGB, punktyJaja[N - 1][N - 1].yRGB, punktyJaja[N - 1][N - 1].zRGB);
 		glVertex3f(punktyJaja[N - 1][N - 1].x, punktyJaja[N - 1][N - 1].y - 5, punktyJaja[N - 1][N - 1].z);
 
 		
@@ -304,32 +317,43 @@ void Jajo() {
 			int pom = N - i;
 			for (int j = 0; j < N - 1; j++) {
 				if (i == 1) {
+					glColor3f(punktyJaja[i][j].xRGB, punktyJaja[i][j].yRGB, punktyJaja[i][j].zRGB);
 					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
+					glColor3f(punktyJaja[i][j + 1].xRGB, punktyJaja[i][j + 1].yRGB, punktyJaja[i][j + 1].zRGB);
 					glVertex3f(punktyJaja[i][j + 1].x, punktyJaja[i][j + 1].y - 5, punktyJaja[i][j + 1].z);
+					glColor3f(punktyJaja[0][0].xRGB, punktyJaja[0][0].yRGB, punktyJaja[0][0].zRGB);
 					glVertex3f(punktyJaja[0][0].x, punktyJaja[0][0].y - 5, punktyJaja[0][0].z);
 				}
 				else {
+					glColor3f(punktyJaja[i][j].xRGB, punktyJaja[i][j].yRGB, punktyJaja[i][j].zRGB);
 					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
+					glColor3f(punktyJaja[i - 1][j].xRGB, punktyJaja[i - 1][j].yRGB, punktyJaja[i - 1][j].zRGB);
 					glVertex3f(punktyJaja[i - 1][j].x, punktyJaja[i - 1][j].y - 5, punktyJaja[i - 1][j].z);
+					glColor3f(punktyJaja[i - 1][j + 1].xRGB, punktyJaja[i - 1][j + 1].yRGB, punktyJaja[i - 1][j + 1].zRGB);
 					glVertex3f(punktyJaja[i - 1][j + 1].x, punktyJaja[i - 1][j + 1].y - 5, punktyJaja[i - 1][j + 1].z);
 
-
-					glColor3f(1.0f, 1.0f, 0.0f);
+					glColor3f(punktyJaja[i][j].xRGB, punktyJaja[i][j].yRGB, punktyJaja[i][j].zRGB);
 					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
+					glColor3f(punktyJaja[i][j + 1].xRGB, punktyJaja[i][j + 1].yRGB, punktyJaja[i][j + 1].zRGB);
 					glVertex3f(punktyJaja[i][j + 1].x, punktyJaja[i][j + 1].y - 5, punktyJaja[i][j + 1].z);
+					glColor3f(punktyJaja[i - 1][j + 1].xRGB, punktyJaja[i - 1][j + 1].yRGB, punktyJaja[i - 1][j + 1].zRGB);
 					glVertex3f(punktyJaja[i - 1][j + 1].x, punktyJaja[i - 1][j + 1].y - 5, punktyJaja[i - 1][j + 1].z);
-					glColor3f(1.0f, 1.0f, 1.0f);
 				}
 				if (pom != N) {
+					glColor3f(punktyJaja[i][0].xRGB, punktyJaja[i][0].yRGB, punktyJaja[i][0].zRGB);
 					glVertex3f(punktyJaja[i][0].x, punktyJaja[i][0].y - 5, punktyJaja[i][0].z);
+					glColor3f(punktyJaja[pom][N - 1].xRGB, punktyJaja[pom][N - 1].yRGB, punktyJaja[pom][N - 1].zRGB);
 					glVertex3f(punktyJaja[pom][N - 1].x, punktyJaja[pom][N - 1].y - 5, punktyJaja[pom][N - 1].z);
+					glColor3f(punktyJaja[pom - 1][N - 1].xRGB, punktyJaja[pom - 1][N - 1].yRGB, punktyJaja[pom - 1][N - 1].zRGB);
 					glVertex3f(punktyJaja[pom - 1][N - 1].x, punktyJaja[pom - 1][N - 1].y - 5, punktyJaja[pom - 1][N - 1].z);
 
-					glColor3f(1.0f, 1.0f, 0.0f);
+
+					glColor3f(punktyJaja[i][0].xRGB, punktyJaja[i][0].yRGB, punktyJaja[i][0].zRGB);
 					glVertex3f(punktyJaja[i][0].x, punktyJaja[i][0].y - 5, punktyJaja[i][0].z);
+					glColor3f(punktyJaja[i + 1][0].xRGB, punktyJaja[i + 1][0].yRGB, punktyJaja[i + 1][0].zRGB);
 					glVertex3f(punktyJaja[i+1][0].x, punktyJaja[i+1][0].y - 5, punktyJaja[i+1][0].z);
+					glColor3f(punktyJaja[pom - 1][N - 1].xRGB, punktyJaja[pom - 1][N - 1].yRGB, punktyJaja[pom - 1][N - 1].zRGB);
 					glVertex3f(punktyJaja[pom - 1][N - 1].x, punktyJaja[pom - 1][N - 1].y - 5, punktyJaja[pom - 1][N - 1].z);
-					glColor3f(1.0f, 1.0f, 1.0f);
 				}
 			}
 		}
@@ -441,6 +465,7 @@ void main(void)
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
 	glutInitWindowSize(1000, 1000);
+	nic();
 
 	glutCreateWindow("Rzutowanie perspektywiczne");
 
