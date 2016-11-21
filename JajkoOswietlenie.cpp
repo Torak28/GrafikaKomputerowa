@@ -123,6 +123,32 @@ float wyliczZ(float u, float v) {
 	return ((-90 * pow(u, 5) + 225 * pow(u, 4) - 270 * pow(u, 3) + 180 * pow(u, 2) - 45 * u) * sin(PIV));
 }
 
+float wyliczXu(float u, float v) {
+	float PIV = M_PI * v;
+	return (-450 * pow(u, 4) + 900 * pow(u, 3) - 810 * pow(u, 2) + 360 * u - 45) * cos(PIV);
+}
+float wyliczXv(float u, float v) {
+	float PIV = M_PI * v;
+	return M_PI * (90 * pow(u,5) - 225 * pow(u,4) + 270 * pow(u,3) -180 * pow(u,2) + 45 * u) * sin(PIV);
+}
+float wyliczYu(float u, float v) {
+	return (640 * pow(u, 3) - 960 * pow(u, 2) + 320 * u);
+}
+float wyliczYv(float u, float v) {
+	return 0;
+}
+float wyliczZu(float u, float v) {
+	float PIV = M_PI * v;
+	return (-450 * pow(u,4) + 900 * pow(u,3) - 810 * pow(u,2) + 360 * u - 45)  * sin(PIV);
+}
+float wyliczZv(float u, float v) {
+	float PIV = M_PI * v;
+	return - M_PI * (90 * pow(u,5) - 225 * pow(u,4) + 270 * pow(u,3) - 180 * pow(u,2) + 45 * u) * cos(PIV);
+}
+float dlugoscWektora(float xv, float yv, float zv) {
+	return sqrt(pow(xv,2) + pow(yv,2) + pow(zv,2));
+}
+
 struct Punkt {
 	float x;
 	float y;
@@ -130,17 +156,20 @@ struct Punkt {
 	float xRGB;
 	float yRGB;
 	float zRGB;
+	float xV;
+	float yV;
+	float zV;
 };
 
 
 /********************************OBSŁUGA********************************/
 // 1- punkty, 2- siatka, 3 - wypełnione trójkąty, 4 - czjniczek
-int model = 4;
+int model = 3;
 int ruch = 1;
 float KAT = 90.0;
 
 // Ilosc podzialow boku kwadratu jednostkowego
-const int N = 150;
+const int N = 90;
 // Obrot
 static GLfloat theta[] = { 0.0, 0.0, 0.0 };
 // Tablica sluzaca do zapisywania punktow
@@ -161,11 +190,27 @@ void nic() {
 			punktyJaja[i][j].xRGB = ((double)rand() / (RAND_MAX));
 			punktyJaja[i][j].yRGB = ((double)rand() / (RAND_MAX));
 			punktyJaja[i][j].zRGB = ((double)rand() / (RAND_MAX));
+
+			float xU = wyliczXu(i * krok, j * krok);
+			float xV = wyliczXv(i * krok, j * krok);
+			float yU = wyliczYu(i * krok, j * krok);
+			float yV = wyliczYv(i * krok, j * krok);
+			float zU = wyliczZu(i * krok, j * krok);
+			float zV = wyliczZv(i * krok, j * krok);
+			float xVector = (yU * zV - zU * yV);
+			float yVector = (zU * xV - xU * zV);
+			float zVector = (xU * yV - yU * xV);
+			float dl = dlugoscWektora(xVector, yVector, zVector);
+			punktyJaja[i][j].xV = xVector / dl;
+			punktyJaja[i][j].yV = yVector / dl;
+			punktyJaja[i][j].zV = zVector / dl;
+			//cout << "x= " << punktyJaja[i][j].xV << "\ty= " << punktyJaja[i][j].yV << "\tz= " << punktyJaja[i][j].zV << endl;
 		}
 	}
 }
 
 void Jajo() {
+	nic();
 	// Punkty
 	if (model == 1) {
 		for (int i = 0; i < N; i++) {
@@ -257,60 +302,60 @@ void Jajo() {
 			int pom = N - i;
 			for (int j = 0; j < N - 1; j++) {
 				if (i == N - 1) {
-					//glColor3f(punktyJaja[i][j].xRGB, punktyJaja[i][j].yRGB, punktyJaja[i][j].zRGB);
+					glNormal3f(-punktyJaja[i][j].xV, -punktyJaja[i][j].yV, -punktyJaja[i][j].zV);
 					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
-					//glColor3f(punktyJaja[i][j + 1].xRGB, punktyJaja[i][j + 1].yRGB, punktyJaja[i][j + 1].zRGB);
+					glNormal3f(-punktyJaja[i][j + 1].xV, -punktyJaja[i][j + 1].yV, -punktyJaja[i][j + 1].zV);
 					glVertex3f(punktyJaja[i][j + 1].x, punktyJaja[i][j + 1].y - 5, punktyJaja[i][j + 1].z);
-					//glColor3f(punktyJaja[0][0].xRGB, punktyJaja[0][0].yRGB, punktyJaja[0][0].zRGB);
+					glNormal3f(-punktyJaja[0][0].xV, -punktyJaja[0][0].yV, -punktyJaja[0][0].zV);
 					glVertex3f(punktyJaja[0][0].x, punktyJaja[0][0].y - 5, punktyJaja[0][0].z);
 				}
 				else {
-					//glColor3f(punktyJaja[i][j].xRGB, punktyJaja[i][j].yRGB, punktyJaja[i][j].zRGB);
+					glNormal3f(-punktyJaja[i][j].xV, -punktyJaja[i][j].yV, -punktyJaja[i][j].zV);
 					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
-					//glColor3f(punktyJaja[i + 1][j].xRGB, punktyJaja[i + 1][j].yRGB, punktyJaja[i + 1][j].zRGB);
+					glNormal3f(-punktyJaja[i + 1][j].xV, -punktyJaja[i + 1][j].yV, -punktyJaja[i + 1][j].zV);
 					glVertex3f(punktyJaja[i + 1][j].x, punktyJaja[i + 1][j].y - 5, punktyJaja[i + 1][j].z);
-					//glColor3f(punktyJaja[i + 1][j + 1].xRGB, punktyJaja[i + 1][j + 1].yRGB, punktyJaja[i + 1][j + 1].zRGB);
+					glNormal3f(-punktyJaja[i + 1][j + 1].xV, -punktyJaja[i + 1][j + 1].yV, -punktyJaja[i + 1][j + 1].zV);
 					glVertex3f(punktyJaja[i + 1][j + 1].x, punktyJaja[i + 1][j + 1].y - 5, punktyJaja[i + 1][j + 1].z);
 
-					//glColor3f(punktyJaja[i][j].xRGB, punktyJaja[i][j].yRGB, punktyJaja[i][j].zRGB);
+					glNormal3f(-punktyJaja[i][j].xV, -punktyJaja[i][j].yV, -punktyJaja[i][j].zV);
 					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
-					//glColor3f(punktyJaja[i][j + 1].xRGB, punktyJaja[i][j + 1].yRGB, punktyJaja[i][j + 1].zRGB);
+					glNormal3f(-punktyJaja[i][j + 1].xV, -punktyJaja[i][j + 1].yV, -punktyJaja[i][j + 1].zV);
 					glVertex3f(punktyJaja[i][j + 1].x, punktyJaja[i][j + 1].y - 5, punktyJaja[i][j + 1].z);
-					//glColor3f(punktyJaja[i + 1][j + 1].xRGB, punktyJaja[i + 1][j + 1].yRGB, punktyJaja[i + 1][j + 1].zRGB);
+					glNormal3f(-punktyJaja[i + 1][j + 1].xV, -punktyJaja[i + 1][j + 1].yV, -punktyJaja[i + 1][j + 1].zV);
 					glVertex3f(punktyJaja[i + 1][j + 1].x, punktyJaja[i + 1][j + 1].y - 5, punktyJaja[i + 1][j + 1].z);
 				}
 				if (pom != N) {
-					//glColor3f(punktyJaja[i][0].xRGB, punktyJaja[i][0].yRGB, punktyJaja[i][0].zRGB);
+					glNormal3f(-punktyJaja[i][0].xV, -punktyJaja[i][0].yV, -punktyJaja[i][0].zV);
 					glVertex3f(punktyJaja[i][0].x, punktyJaja[i][0].y - 5, punktyJaja[i][0].z);
-					//glColor3f(punktyJaja[pom][N - 1].xRGB, punktyJaja[pom][N - 1].yRGB, punktyJaja[pom][N - 1].zRGB);
+					glNormal3f(punktyJaja[pom][N - 1].xV, punktyJaja[pom][N - 1].yV, punktyJaja[pom][N - 1].zV);
 					glVertex3f(punktyJaja[pom][N - 1].x, punktyJaja[pom][N - 1].y - 5, punktyJaja[pom][N - 1].z);
-					//glColor3f(punktyJaja[pom + 1][N - 1].xRGB, punktyJaja[pom + 1][N - 1].yRGB, punktyJaja[pom + 1][N - 1].zRGB);
+					glNormal3f(punktyJaja[pom + 1][N - 1].xV, punktyJaja[pom + 1][N - 1].yV, punktyJaja[pom + 1][N - 1].zV);
 					glVertex3f(punktyJaja[pom + 1][N - 1].x, punktyJaja[pom + 1][N - 1].y - 5, punktyJaja[pom + 1][N - 1].z);
 
 					if (i != N / 2){
-						//glColor3f(punktyJaja[i][0].xRGB, punktyJaja[i][0].yRGB, punktyJaja[i][0].zRGB);
+						glNormal3f(-punktyJaja[i][0].xV, -punktyJaja[i][0].yV, -punktyJaja[i][0].zV);
 						glVertex3f(punktyJaja[i][0].x, punktyJaja[i][0].y - 5, punktyJaja[i][0].z);
-						//glColor3f(punktyJaja[i - 1][0].xRGB, punktyJaja[i - 1][0].yRGB, punktyJaja[i - 1][0].zRGB);
+						glNormal3f(-punktyJaja[i - 1][0].xV, -punktyJaja[i - 1][0].yV, -punktyJaja[i - 1][0].zV);
 						glVertex3f(punktyJaja[i - 1][0].x, punktyJaja[i - 1][0].y - 5, punktyJaja[i - 1][0].z);
-						//glColor3f(punktyJaja[pom + 1][N - 1].xRGB, punktyJaja[pom + 1][N - 1].yRGB, punktyJaja[pom + 1][N - 1].zRGB);
+						glNormal3f(punktyJaja[pom + 1][N - 1].xV, punktyJaja[pom + 1][N - 1].yV, punktyJaja[pom + 1][N - 1].zV);
 						glVertex3f(punktyJaja[pom + 1][N - 1].x, punktyJaja[pom + 1][N - 1].y - 5, punktyJaja[pom + 1][N - 1].z);
 					}
 				}
 			}
 		}
-		//glColor3f(punktyJaja[0][0].xRGB, punktyJaja[0][0].yRGB, punktyJaja[0][0].zRGB);
+		glNormal3f(-punktyJaja[0][0].xV, -punktyJaja[0][0].yV, -punktyJaja[0][0].zV);
 		glVertex3f(punktyJaja[0][0].x, punktyJaja[0][0].y - 5, punktyJaja[0][0].z);
-		//glColor3f(punktyJaja[N - 1][0].xRGB, punktyJaja[N - 1][0].yRGB, punktyJaja[N - 1][0].zRGB);
+		glNormal3f(-punktyJaja[N - 1][0].xV, -punktyJaja[N - 1][0].yV, -punktyJaja[N - 1][0].zV);
 		glVertex3f(punktyJaja[N - 1][0].x, punktyJaja[N - 1][0].y - 5, punktyJaja[N - 1][0].z);
-		//glColor3f(punktyJaja[1][N - 1].xRGB, punktyJaja[1][N - 1].yRGB, punktyJaja[1][N - 1].zRGB);
+		glNormal3f(punktyJaja[1][N - 1].xV, punktyJaja[1][N - 1].yV, punktyJaja[1][N - 1].zV);
 		glVertex3f(punktyJaja[1][N - 1].x, punktyJaja[1][N - 1].y - 5, punktyJaja[1][N - 1].z);
 
 
-		//glColor3f(punktyJaja[0][0].xRGB, punktyJaja[0][0].yRGB, punktyJaja[0][0].zRGB);
+		glNormal3f(punktyJaja[0][0].xV, punktyJaja[0][0].yV, punktyJaja[0][0].zV);
 		glVertex3f(punktyJaja[0][0].x, punktyJaja[0][0].y - 5, punktyJaja[0][0].z);
-		//glColor3f(punktyJaja[1][0].xRGB, punktyJaja[1][0].yRGB, punktyJaja[1][0].zRGB);
+		glNormal3f(punktyJaja[1][0].xV, punktyJaja[1][0].yV, punktyJaja[1][0].zV);
 		glVertex3f(punktyJaja[1][0].x, punktyJaja[1][0].y - 5, punktyJaja[1][0].z);
-		//glColor3f(punktyJaja[N - 1][N - 1].xRGB, punktyJaja[N - 1][N - 1].yRGB, punktyJaja[N - 1][N - 1].zRGB);
+		glNormal3f(-punktyJaja[N - 1][N - 1].xV, -punktyJaja[N - 1][N - 1].yV, -punktyJaja[N - 1][N - 1].zV);
 		glVertex3f(punktyJaja[N - 1][N - 1].x, punktyJaja[N - 1][N - 1].y - 5, punktyJaja[N - 1][N - 1].z);
 
 		
@@ -318,45 +363,45 @@ void Jajo() {
 			int pom = N - i;
 			for (int j = 0; j < N - 1; j++) {
 				if (i == 1) {
-					//glColor3f(punktyJaja[i][j].xRGB, punktyJaja[i][j].yRGB, punktyJaja[i][j].zRGB);
+					glNormal3f(punktyJaja[i][j].xV, punktyJaja[i][j].yV, punktyJaja[i][j].zV);
 					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
-					//glColor3f(punktyJaja[i][j + 1].xRGB, punktyJaja[i][j + 1].yRGB, punktyJaja[i][j + 1].zRGB);
+					glNormal3f(punktyJaja[i][j + 1].xV, punktyJaja[i][j + 1].yV, punktyJaja[i][j + 1].zV);
 					glVertex3f(punktyJaja[i][j + 1].x, punktyJaja[i][j + 1].y - 5, punktyJaja[i][j + 1].z);
-					//glColor3f(punktyJaja[0][0].xRGB, punktyJaja[0][0].yRGB, punktyJaja[0][0].zRGB);
+					glNormal3f(punktyJaja[0][0].xV, punktyJaja[0][0].yV, punktyJaja[0][0].zV);
 					glVertex3f(punktyJaja[0][0].x, punktyJaja[0][0].y - 5, punktyJaja[0][0].z);
 				}
 				else {
 					if (i != 0) {
-					//glColor3f(punktyJaja[i][j].xRGB, punktyJaja[i][j].yRGB, punktyJaja[i][j].zRGB);
+					glNormal3f(punktyJaja[i][j].xV, punktyJaja[i][j].yV, punktyJaja[i][j].zV);
 					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
-					//glColor3f(punktyJaja[i - 1][j].xRGB, punktyJaja[i - 1][j].yRGB, punktyJaja[i - 1][j].zRGB);
+					glNormal3f(punktyJaja[i - 1][j].xV, punktyJaja[i - 1][j].yV, punktyJaja[i - 1][j].zV);
 					glVertex3f(punktyJaja[i - 1][j].x, punktyJaja[i - 1][j].y - 5, punktyJaja[i - 1][j].z);
-					//glColor3f(punktyJaja[i - 1][j + 1].xRGB, punktyJaja[i - 1][j + 1].yRGB, punktyJaja[i - 1][j + 1].zRGB);
+					glNormal3f(punktyJaja[i - 1][j + 1].xV, punktyJaja[i - 1][j + 1].yV, punktyJaja[i - 1][j + 1].zV);
 					glVertex3f(punktyJaja[i - 1][j + 1].x, punktyJaja[i - 1][j + 1].y - 5, punktyJaja[i - 1][j + 1].z);
 					}
 					
 
-					//glColor3f(punktyJaja[i][j].xRGB, punktyJaja[i][j].yRGB, punktyJaja[i][j].zRGB);
+					glNormal3f(punktyJaja[i][j].xV, punktyJaja[i][j].yV, punktyJaja[i][j].zV);
 					glVertex3f(punktyJaja[i][j].x, punktyJaja[i][j].y - 5, punktyJaja[i][j].z);
-					//glColor3f(punktyJaja[i][j + 1].xRGB, punktyJaja[i][j + 1].yRGB, punktyJaja[i][j + 1].zRGB);
+					glNormal3f(punktyJaja[i][j + 1].xV, punktyJaja[i][j + 1].yV, punktyJaja[i][j + 1].zV);
 					glVertex3f(punktyJaja[i][j + 1].x, punktyJaja[i][j + 1].y - 5, punktyJaja[i][j + 1].z);
-					//glColor3f(punktyJaja[i - 1][j + 1].xRGB, punktyJaja[i - 1][j + 1].yRGB, punktyJaja[i - 1][j + 1].zRGB);
+					glNormal3f(punktyJaja[i - 1][j + 1].xV, punktyJaja[i - 1][j + 1].yV, punktyJaja[i - 1][j + 1].zV);
 					glVertex3f(punktyJaja[i - 1][j + 1].x, punktyJaja[i - 1][j + 1].y - 5, punktyJaja[i - 1][j + 1].z);
 				}
 				if (pom != N) {
-					//glColor3f(punktyJaja[i][0].xRGB, punktyJaja[i][0].yRGB, punktyJaja[i][0].zRGB);
+					glNormal3f(punktyJaja[i][0].xV, punktyJaja[i][0].yV, punktyJaja[i][0].zV);
 					glVertex3f(punktyJaja[i][0].x, punktyJaja[i][0].y - 5, punktyJaja[i][0].z);
-					//glColor3f(punktyJaja[pom][N - 1].xRGB, punktyJaja[pom][N - 1].yRGB, punktyJaja[pom][N - 1].zRGB);
+					glNormal3f(-punktyJaja[pom][N - 1].xV, -punktyJaja[pom][N - 1].yV, -punktyJaja[pom][N - 1].zV);
 					glVertex3f(punktyJaja[pom][N - 1].x, punktyJaja[pom][N - 1].y - 5, punktyJaja[pom][N - 1].z);
-					//glColor3f(punktyJaja[pom - 1][N - 1].xRGB, punktyJaja[pom - 1][N - 1].yRGB, punktyJaja[pom - 1][N - 1].zRGB);
+					glNormal3f(-punktyJaja[pom - 1][N - 1].xV, -punktyJaja[pom - 1][N - 1].yV, -punktyJaja[pom - 1][N - 1].zV);
 					glVertex3f(punktyJaja[pom - 1][N - 1].x, punktyJaja[pom - 1][N - 1].y - 5, punktyJaja[pom - 1][N - 1].z);
 
 
-					//glColor3f(punktyJaja[i][0].xRGB, punktyJaja[i][0].yRGB, punktyJaja[i][0].zRGB);
+					glNormal3f(punktyJaja[i][0].xV, punktyJaja[i][0].yV, punktyJaja[i][0].zV);
 					glVertex3f(punktyJaja[i][0].x, punktyJaja[i][0].y - 5, punktyJaja[i][0].z);
-					//glColor3f(punktyJaja[i + 1][0].xRGB, punktyJaja[i + 1][0].yRGB, punktyJaja[i + 1][0].zRGB);
+					glNormal3f(punktyJaja[i + 1][0].xV,punktyJaja[i + 1][0].yV, punktyJaja[i + 1][0].zV);
 					glVertex3f(punktyJaja[i+1][0].x, punktyJaja[i+1][0].y - 5, punktyJaja[i+1][0].z);
-					//glColor3f(punktyJaja[pom - 1][N - 1].xRGB, punktyJaja[pom - 1][N - 1].yRGB, punktyJaja[pom - 1][N - 1].zRGB);
+					glNormal3f(-punktyJaja[pom - 1][N - 1].xV, -punktyJaja[pom - 1][N - 1].yV, -punktyJaja[pom - 1][N - 1].zV);
 					glVertex3f(punktyJaja[pom - 1][N - 1].x, punktyJaja[pom - 1][N - 1].y - 5, punktyJaja[pom - 1][N - 1].z);
 				}
 			}
@@ -431,26 +476,26 @@ void MyInit(void)
 	//  Definicja materiału z jakiego zrobiony jest czajnik 
 	//  i definicja źródła światła
 	/*************************************************************************************/
-
+	//glColor3f(1.0f, 1.0f, 0.0f);
 	/*************************************************************************************/
 	// Definicja materiału z jakiego zrobiony jest czajnik 
 
-	GLfloat mat_ambient[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat mat_ambient[] = { 0.24725f, 0.1995f, 0.0745f, 1.0f };
 	// współczynniki ka =[kar,kag,kab] dla światła otoczenia
 
-	GLfloat mat_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat mat_diffuse[] = { 0.75164f, 0.60648f, 0.22648f};
 	// współczynniki kd =[kdr,kdg,kdb] światła rozproszonego
 
-	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat mat_specular[] = { 0.628281f, 0.555802f, 0.366065f};
 	// współczynniki ks =[ksr,ksg,ksb] dla światła odbitego                
 
-	GLfloat mat_shininess = { 20.0 };
+	GLfloat mat_shininess = { 20.0f };
 	// współczynnik n opisujący połysk powierzchni
 
 	/*************************************************************************************/
 	// Definicja źródła światła
 
-	GLfloat light_position[] = { 0.0, 0.0, 10.0, 1.0 };
+	GLfloat light_position[] = { 0.0, 0.0, 1.0, 1.0 };
 	// położenie źródła
 
 	GLfloat light_ambient[] = { 0.1f, 0.1f, 0.1f, 1.0f };
@@ -482,10 +527,10 @@ void MyInit(void)
 	/*************************************************************************************/
 	// Ustawienie patrametrów materiału
 
-	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-	glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
-	glMaterialf(GL_FRONT, GL_SHININESS, mat_shininess);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, mat_shininess * 128.0);
 
 	/*************************************************************************************/
 	// Ustawienie parametrów źródła
@@ -506,8 +551,7 @@ void MyInit(void)
 	glEnable(GL_LIGHTING);   // właczenie systemu oświetlenia sceny 
 	glEnable(GL_LIGHT0);     // włączenie źródła o numerze 0
 	glEnable(GL_DEPTH_TEST); // włączenie mechanizmu z-bufora 
-
-							 /*************************************************************************************/
+	/*************************************************************************************/
 }
 
 // Funkcja ma za zadanie utrzymanie stałych proporcji rysowanych 
@@ -552,7 +596,6 @@ void main(void)
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 
 	glutInitWindowSize(1000, 1000);
-	nic();
 
 	glutCreateWindow("Rzutowanie perspektywiczne");
 
