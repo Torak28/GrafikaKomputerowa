@@ -389,6 +389,9 @@ void RenderScene(void)
 	}
 	else if (status == 2) {
 		viewer[2] += delta_y*0.05;
+		if (viewer[2] > 14.00) {
+			viewer[2] = 9.00;
+		}
 	}
 
 	gluLookAt(viewer[0], viewer[1], viewer[2], 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
