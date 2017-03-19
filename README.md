@@ -11,3 +11,7 @@
 
 # Projekt:
 * Gra w P5JS dostępna [tutaj](https://torak28.github.io/asteroids)
+
+# Ocena końcowa
+
+**5**
